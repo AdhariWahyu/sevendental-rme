@@ -142,7 +142,7 @@
     <div class="invoice-box">
         <!-- Background container element -->
         <div class="background-container"></div>
-        
+
         <!-- Content container -->
         <div class="invoice-content">
             <table cellpadding="0" cellspacing="0">
@@ -152,10 +152,9 @@
                             <tr>
                                 <td class="title" style="text-align: center; height: 52px; padding-top: 15px; transform: translateX(-40px);">
                                     <p style="font-size: 14px; font-weight: bold; margin: 0; line-height: 1.2;">PRAKTEK DOKTER GIGI</p>
-                                    <!--<p style="font-size: 10px; margin: 0; line-height: 1.2;">Jl. Dharmahusada Indah I No. 90 / L-175</p>-->
                                     <p style="font-size: 10px; margin: 0; line-height: 1.2;"> {{ $invoice->address_line1 }} </p>
                                     <p style="font-size: 10px; margin: 0; line-height: 1.2;">Mulyorejo - Surabaya, Jawa Timur 60115</p>
-                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Telp. 0856-4846-5455</p>
+                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Telp. 0856-4844-3455</p>
                                 </td>
 
                                 <td class="noin">
