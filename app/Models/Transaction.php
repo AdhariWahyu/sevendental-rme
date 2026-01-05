@@ -20,41 +20,55 @@ class Transaction extends Model
         'paid_date',
         'address_option'
     ];
-    
+
     public function setJenisPerawatanAttribute($value)
-{
-    $this->attributes['jenis_perawatan'] = json_encode($value);
-}
+    {
+        $this->attributes['jenis_perawatan'] = json_encode($value);
+    }
 
     public function getAddressLine1Attribute(): string
     {
         return match ($this->address_option) {
-            'second'  => 'Jl. Wisma Permai Tengah IX Blok KK No.7',
-            default   => 'Jl. Dharmahusada Indah I No. 90 / L-175',
+            'praktek_second' => 'Jl. Wisma Permai Tengah IX Blok KK No.7',
+            'klinik_original' => 'Jl. Dharmahusada Indah I No. 90 / L-175',
+            'praktek_original' => 'Jl. Dharmahusada Indah I No. 90 / L-175',
+            'second' => 'Jl. Wisma Permai Tengah IX Blok KK No.7',
+            'original' => 'Jl. Dharmahusada Indah I No. 90 / L-175',
+            default => 'Jl. Dharmahusada Indah I No. 90 / L-175',
         };
     }
 
+    public function getHeaderTitleAttribute(): string
+    {
+        return match ($this->address_option) {
+            'praktek_second' => 'PRAKTEK DOKTER GIGI',
+            'klinik_original' => 'KLINIK SEVENDENTAL',
+            'praktek_original' => 'PRAKTEK DOKTER GIGI',
+            'second' => 'PRAKTEK DOKTER GIGI',
+            'original' => 'PRAKTEK DOKTER GIGI',
+            default => 'PRAKTEK DOKTER GIGI',
+        };
+    }
 
     protected static function boot()
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::creating(function ($model) {
-        if (is_null($model->no_invoice)) {
-            $model->no_invoice = 'dhu-' . mt_rand(1000000000, 9999999999);
-        }
-        if (!is_null($model->jumlah)) {
-            $model->terbilang = self::terbilang($model->jumlah) . ' Rupiah';
-        }
-    });
+        static::creating(function ($model) {
+            if (is_null($model->no_invoice)) {
+                $model->no_invoice = 'dhu-' . mt_rand(1000000000, 9999999999);
+            }
+            if (!is_null($model->jumlah)) {
+                $model->terbilang = self::terbilang($model->jumlah) . ' Rupiah';
+            }
+        });
 
-    static::updating(function ($model) {
-        if (!is_null($model->jumlah)) {
-            $model->terbilang = self::terbilang($model->jumlah) . ' Rupiah';
-        }
-    });
-}
-
+        static::updating(function ($model) {
+            if (!is_null($model->jumlah)) {
+                $model->terbilang = self::terbilang($model->jumlah) . ' Rupiah';
+            }
+        });
+    }
 
     public function patient()
     {

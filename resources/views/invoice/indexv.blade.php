@@ -5,8 +5,8 @@
     <title>Seven Dental Clinic</title>
 
     <style>
-.invoice-box {
-    max-width: 800px;
+        .invoice-box {
+            max-width: 800px;
             margin: auto;
             padding: 30px;
             border: 1px solid #eee;
@@ -15,8 +15,29 @@
             line-height: 24px;
             font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
             color: #555;
-}
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
 
+        .background-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://lemonchiffon-dolphin-386228.hostingersite.com/wp-content/uploads/2025/06/WhatsApp-Image-2025-04-30-at-1.25.36-PM-e1751080693519.jpeg');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .invoice-content {
+            position: relative;
+            z-index: 2;
+        }
 
         .invoice-box table {
             width: 100%;
@@ -25,7 +46,7 @@
         }
 
         .invoice-box table td {
-            padding: 5px; /* Increased padding */
+            padding: 5px;
             vertical-align: top;
         }
 
@@ -39,10 +60,9 @@
         }
 
         .invoice-box table tr.top table td.title {
-            font-size: 40px; /* Increased font size */
+            font-size: 40px;
             line-height: 40px;
             color: #333;
-
         }
 
         .invoice-box table tr.information table td {
@@ -51,7 +71,6 @@
 
         .invoice-box table tr.heading td {
             background: #ffffff;
-            /* border-bottom: 1px solid #ddd; */
             font-weight: bold;
         }
 
@@ -109,86 +128,78 @@
             padding-bottom: 30px !important;
         }
 
-.ppp {
-    width: 30% !important;
-    font-weight: 500 !important;
-}
-
-
-
-
+        .ppp {
+            width: 30% !important;
+            font-weight: 500 !important;
+        }
     </style>
 </head>
 
 <body>
     <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td class="title" style="text-align: center; height: 52px; padding-top: 15px; transform: translateX(-40px);">
-                     <p style="font-size: 14px; font-weight: bold; margin: 0; line-height: 1.2;">PRAKTEK DOKTER GIGI</p>
-                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Jl. Dharmahusada Indah I No. 90 / L-175</p>
-                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Mulyorejo - Surabaya, Jawa Timur 60115</p>
-                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Telp. 0856-4846-5455</p>
-                </td>
+        <div class="background-container"></div>
 
-                            <td class="noin">
-                                <p>KWITANSI {{ $invoice->no_invoice }}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+        <div class="invoice-content">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td class="title" style="text-align: center; height: 52px; padding-top: 15px; transform: translateX(-40px);">
+                                    <p style="font-size: 14px; font-weight: bold; margin: 0; line-height: 1.2;">{{ $invoice->header_title }}</p>
+                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">{{ $invoice->address_line1 }}</p>
+                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Mulyorejo - Surabaya, Jawa Timur 60115</p>
+                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">Telp. 0856-4844-3455</p>
+                                </td>
 
-            <tr class="details">
-                <td class="ppp">Telah diterima dari </td>
+                                <td class="noin">
+                                    <p>KWITANSI {{ $invoice->no_invoice }}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-                <td>: <span class="left-aligned">{{ $invoice->patient->nama }}</span></td>
-            </tr>
+                <tr class="details">
+                    <td class="ppp">Telah diterima dari </td>
+                    <td>: <span class="left-aligned">{{ $invoice->patient->nama }}</span></td>
+                </tr>
 
-            <tr class="item">
-                <td class="ppp">Terbilang </td>
+                <tr class="item">
+                    <td class="ppp">Terbilang </td>
+                    <td>: <span class="left-aligned">{{ $invoice->terbilang }}</span></td>
+                </tr>
 
-                <td>: <span class="left-aligned">{{ $invoice->terbilang }}</span></td>
-            </tr>
+                <tr class="item">
+                    <td class="ppp">Jenis Perawatan </td>
+                    <td>: <span class="left-aligned">{{ implode(', ', json_decode($invoice->jenis_perawatan)) }}</span></td>
+                </tr>
 
-                        <tr class="item">
-                <td class="ppp">Jenis Perawatan </td>
+                <tr class="item last">
+                    <td class="ppp"></td>
+                    <td>
+                        <span class="left-aligned">
+                            {!! $invoice->notes ? nl2br(e($invoice->notes)) : '<br/><br/>' !!}
+                        </span>
+                    </td>
+                </tr>
 
-               <td>: <span class="left-aligned">{{ implode(', ', json_decode($invoice->jenis_perawatan)) }}</span></td>
+                <tr class="heading">
+                    <td>
+                        <div class="jumlah-box">
+                            Jumlah &nbsp; &nbsp; &nbsp;: &nbsp; &nbsp; &nbsp; <span>{{ number_format($invoice->jumlah, 2)}}</span>
+                        </div>
+                    </td>
 
-
-            </tr>
-
-            <tr class="item last">
-                <td class="ppp"></td>
-
-                <td>
-    <span class="left-aligned">
-        {!! $invoice->notes ? nl2br(e($invoice->notes)) : '<br/><br/>' !!}
-    </span>
-</td>
-            </tr>
-
-            <tr class="heading">
-                <td>
-                    <div class="jumlah-box">
-                        Jumlah &nbsp; &nbsp; &nbsp;: &nbsp; &nbsp; &nbsp; <span>{{ number_format($invoice->jumlah, 2)}}</span>
-                    </div>
-                </td>
-
-                <td class="signature-box">
-                    <p>Surabaya, {{ \Carbon\Carbon::parse($invoice->paid_date)->format('d M Y') }}</p> <!-- Konversi manual ke Carbon -->
-                    <p><br/></p>
-                    <p><br/></p>
-
-                    <p>(..........................)</p>
-                </td>
-            </tr>
-
-        </table>
+                    <td class="signature-box">
+                        <p>Surabaya, {{ \Carbon\Carbon::parse($invoice->paid_date)->format('d M Y') }}</p>
+                        <p><br/></p>
+                        <p><br/></p>
+                        <p>(..........................)</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 </html>

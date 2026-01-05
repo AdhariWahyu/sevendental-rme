@@ -5,14 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Transaction;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Filament\Forms;
+use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Actions\Action;
 
 class TransactionResource extends Resource
 {
@@ -24,82 +24,70 @@ class TransactionResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('no_invoice')
-                //     ->required()
-                //     ->maxLength(255),
                 Forms\Components\Select::make('address_option')
-                ->label('Pilih Alamat')
-                ->options([
-                    'original' => 'Jl. Dharmahusada Indah I No. 90 / L-175',
-                    'second'   => 'Jl. Wisma Permai Tengah IX Blok KK No.7',
-                ])
-                ->default('original')
-                ->required(),
+                    ->label('Pilih Format Kwitansi')
+                    ->options([
+                        'praktek_second' => 'Praktek Dokter Gigi - Jl. Wisma Permai Tengah IX',
+                        'klinik_original' => 'Klinik Sevendental - Jl. Dharmahusada Indah I',
+                        'praktek_original' => 'Praktek Dokter Gigi - Jl. Dharmahusada Indah I',
+                    ])
+                    ->default('praktek_original')
+                    ->required()
+                    ->helperText('Pilih format header dan alamat yang akan ditampilkan di kwitansi'),
                 Forms\Components\Select::make('patient_id')
                     ->relationship('patient', 'nama')
                     ->required()
                     ->searchable(),
                 Forms\Components\Select::make('jenis_perawatan')
-                ->options([
-        'Dental Filling (Tambal Gigi)' => 'Dental Filling (Tambal Gigi)',
-        '⁠Exo Treatment (Cabut Gigi)' => '⁠Exo Treatment (Cabut Gigi)',
-        'Kids Exo Treatment (Cabut Gigi Anak)' => 'Kids Exo Treatment (Cabut Gigi Anak)',
-        'Endodontic Treatment' => 'Endodontic Treatment',
-        'Odontectomy Treatment (Operasi Gigi Bungsu)' => 'Odontectomy Treatment (Operasi Gigi Bungsu)',
-        'Orthodontic Treatment (Kawat Gigi / Braces)' => 'Orthodontic Treatment (Kawat Gigi / Braces)',
-        'Scalling Treatment (Pembersihan Karang Gigi)' => 'Scalling Treatment (Pembersihan Karang Gigi)',
-        'GTT (Gigi Tiruan Tetap)' => 'GTT (Gigi Tiruan Tetap)',
-        'GTSL (Gigi Tiruan Sementara Lepasan)' => 'GTSL (Gigi Tiruan Sementara Lepasan)',
-        'Tambal Sementara' => 'Tambal Sementara',
-        'Tambal GIC' => 'Tambal GIC',
-        'Splinting' => 'Splinting',
-        'Gingivectomy' => 'Gingivectomy',
-        'Bleaching (Pemutihan Gigi)' => 'Bleaching (Pemutihan Gigi)',
-        'Konsultasi' => 'Konsultasi',
-        'Crown' => 'Crown',
-        'Retainer' => 'Retainer',
-        'Cetak Gigi' => 'Cetak Gigi',
-        'Denture (Gigi Palsu)' => 'Denture (Gigi Palsu)',
-        'Alveolektomi' => 'Alveolektomi',
-        'Eksisi' => 'Eksisi',
-        'Veneer Direct' => 'Veneer Direct',
-        '⁠Veneer Indirect' => '⁠Veneer Indirect',
-        'Implan' => 'Implan',
-        'APD' => 'APD',
-        'Medicine (obat)' => 'Medicine (obat)',
-        '-' => '-',
-                ])
-                ->columnSpanFull()
-                ->searchable()
-                ->required()
-                ->multiple(),
-
+                    ->options([
+                        'Dental Filling (Tambal Gigi)' => 'Dental Filling (Tambal Gigi)',
+                        'Exo Treatment (Cabut Gigi)' => 'Exo Treatment (Cabut Gigi)',
+                        'Kids Exo Treatment (Cabut Gigi Anak)' => 'Kids Exo Treatment (Cabut Gigi Anak)',
+                        'Endodontic Treatment' => 'Endodontic Treatment',
+                        'Odontectomy Treatment (Operasi Gigi Bungsu)' => 'Odontectomy Treatment (Operasi Gigi Bungsu)',
+                        'Orthodontic Treatment (Kawat Gigi / Braces)' => 'Orthodontic Treatment (Kawat Gigi / Braces)',
+                        'Scalling Treatment (Pembersihan Karang Gigi)' => 'Scalling Treatment (Pembersihan Karang Gigi)',
+                        'GTT (Gigi Tiruan Tetap)' => 'GTT (Gigi Tiruan Tetap)',
+                        'GTSL (Gigi Tiruan Sementara Lepasan)' => 'GTSL (Gigi Tiruan Sementara Lepasan)',
+                        'Tambal Sementara' => 'Tambal Sementara',
+                        'Tambal GIC' => 'Tambal GIC',
+                        'Splinting' => 'Splinting',
+                        'Gingivectomy' => 'Gingivectomy',
+                        'Bleaching (Pemutihan Gigi)' => 'Bleaching (Pemutihan Gigi)',
+                        'Konsultasi' => 'Konsultasi',
+                        'Crown' => 'Crown',
+                        'Retainer' => 'Retainer',
+                        'Cetak Gigi' => 'Cetak Gigi',
+                        'Denture (Gigi Palsu)' => 'Denture (Gigi Palsu)',
+                        'Alveolektomi' => 'Alveolektomi',
+                        'Eksisi' => 'Eksisi',
+                        'Veneer Direct' => 'Veneer Direct',
+                        'Veneer Indirect' => 'Veneer Indirect',
+                        'Implan' => 'Implan',
+                        'APD' => 'APD',
+                        'Medicine (obat)' => 'Medicine (obat)',
+                        '-' => '-',
+                    ])
+                    ->columnSpanFull()
+                    ->searchable()
+                    ->required()
+                    ->multiple(),
                 Forms\Components\Textarea::make('notes')
                     ->disableLabel()
-                    ->columnSpanFull(),
-                // Forms\Components\TextInput::make('jumlah')
-                //     ->required()
-                //     ->numeric(),
-                // Forms\Components\Section::make('Jumlah')
-                //             ->schema([
+                    ->columnSpanFull()
+                    ->placeholder('Catatan tambahan (opsional)'),
                 Forms\Components\TextInput::make('jumlah')
                     ->label('Jumlah')
                     ->required()
                     ->numeric()
                     ->prefix('Rp.'),
-                // ]),
-
-                // Forms\Components\TextInput::make('terbilang')
-                //     ->required()
-                //     ->maxLength(255),
-
                 Forms\Components\TextInput::make('terbilang')
                     ->label('Terbilang')
                     ->disabled(),
-
                 Forms\Components\DatePicker::make('paid_date')
-                    ->label('Paid Date')
-                    ->nullable(),
+                    ->label('Tanggal Pembayaran')
+                    ->required()
+                    ->default(now()),
             ]);
     }
 
@@ -108,33 +96,29 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('no_invoice')
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('patient_id')
-                //     ->numeric()
-                //     ->sortable(),
+                    ->label('No. Invoice')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('patient.nama')
+                    ->label('Nama Pasien')
                     ->sortable()
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('jenis_perawatan')
-                //     ->searchable(),
                 Tables\Columns\TextColumn::make('jumlah')
-                    ->numeric()
+                    ->label('Jumlah')
+                    ->money('IDR')
                     ->sortable(),
-                // Tables\Columns\TextColumn::make('terbilang')
-                //     ->searchable(),
                 Tables\Columns\TextColumn::make('paid_date')
-                    ->date()
+                    ->label('Tanggal Bayar')
+                    ->date('d M Y')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                    ->label('Diupdate')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -145,14 +129,20 @@ class TransactionResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Action::make('View Invoice')
+                    ->label('Lihat')
+                    ->icon('heroicon-o-eye')
                     ->url(fn(Transaction $record): string => route('preview-invoice', $record))
                     ->color('success')
                     ->openUrlInNewTab(),
                 Action::make('Download Invoice')
+                    ->label('Download')
+                    ->icon('heroicon-o-arrow-down-tray')
                     ->url(fn(Transaction $record): string => route('download-invoice', $record))
                     ->color('danger')
                     ->openUrlInNewTab(),
                 Action::make('Print Invoice')
+                    ->label('Print')
+                    ->icon('heroicon-o-printer')
                     ->url(fn(Transaction $record): string => route('print-invoice', $record))
                     ->color('primary')
                     ->openUrlInNewTab(),
@@ -161,7 +151,8 @@ class TransactionResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

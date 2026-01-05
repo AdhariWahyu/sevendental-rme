@@ -21,19 +21,17 @@
             overflow: hidden;
         }
 
-        /* Background image container */
         .background-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /*background-image: url('https://sevendentalsurabaya.com/wp-content/uploads/2025/04/Desain-tanpa-judul6.png');*/
             background-image: url('https://lemonchiffon-dolphin-386228.hostingersite.com/wp-content/uploads/2025/06/WhatsApp-Image-2025-04-30-at-1.25.36-PM-e1751080693519.jpeg');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.2; /* Atur tingkat transparansi di sini */
+            opacity: 0.2;
             z-index: -1;
         }
 
@@ -79,10 +77,6 @@
 
         .invoice-box table tr.details td {
             padding-bottom: 20px;
-        }
-
-        .invoice-box table tr.item td {
-            /* border-bottom: 1px solid #eee; */
         }
 
         .invoice-box table tr.item.last td {
@@ -140,10 +134,8 @@
 
 <body>
     <div class="invoice-box">
-        <!-- Background container element -->
         <div class="background-container"></div>
 
-        <!-- Content container -->
         <div class="invoice-content">
             <table cellpadding="0" cellspacing="0">
                 <tr class="top">
@@ -151,8 +143,8 @@
                         <table>
                             <tr>
                                 <td class="title" style="text-align: center; height: 52px; padding-top: 15px; transform: translateX(-40px);">
-                                    <p style="font-size: 14px; font-weight: bold; margin: 0; line-height: 1.2;">PRAKTEK DOKTER GIGI</p>
-                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;"> {{ $invoice->address_line1 }} </p>
+                                    <p style="font-size: 14px; font-weight: bold; margin: 0; line-height: 1.2;">{{ $invoice->header_title }}</p>
+                                    <p style="font-size: 10px; margin: 0; line-height: 1.2;">{{ $invoice->address_line1 }}</p>
                                     <p style="font-size: 10px; margin: 0; line-height: 1.2;">Mulyorejo - Surabaya, Jawa Timur 60115</p>
                                     <p style="font-size: 10px; margin: 0; line-height: 1.2;">Telp. 0856-4844-3455</p>
                                 </td>
