@@ -26,7 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://tbs-woo.stagingapp.xyz/wp-content/uploads/2026/04/WhatsApp-Image-2025-04-30-at-1.25.36-PM-e1751080693519.jpeg');
+            background-image: url('https://sevendentalsurabaya.com/wp-content/uploads/2026/05/WhatsApp-Image-2025-04-30-at-1.25.36-PM-e1751080693519-1.jpeg');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
